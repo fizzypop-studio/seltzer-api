@@ -1,3 +1,6 @@
-class User < ApplicationRecord
-    devise :database_authenticatable, :registerable, :jwt_authenticatable, jwt_revocation_strategy: JwtDenylist
+class User < ActiveRecord::Base
+  devise :database_authenticatable,
+         :jwt_authenticatable,
+         :registerable,
+         jwt_revocation_strategy: JwtDenylist
 end

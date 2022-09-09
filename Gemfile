@@ -1,14 +1,14 @@
 source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
-gem 'dotenv-rails', groups: [:development, :test]
+gem "dotenv-rails", groups: %i[development test]
 
 ruby "3.1.2"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 7.0.2", ">= 7.0.2.4"
 
-# Use sqlite3 as the database for Active Record
-gem "sqlite3", "~> 1.4"
+# Use Postgres as the database for Active Record
+gem "pg"
 
 # Use the Puma web server [https://github.com/puma/puma]
 gem "puma", "~> 5.0"
@@ -26,7 +26,7 @@ gem "puma", "~> 5.0"
 # gem "bcrypt", "~> 3.1.7"
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem "tzinfo-data", platforms: %i[ mingw mswin x64_mingw jruby ]
+gem "tzinfo-data", platforms: %i[mingw mswin x64_mingw jruby]
 
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", require: false
@@ -37,16 +37,18 @@ gem "bootsnap", require: false
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 # gem "rack-cors"
 
-gem 'devise'
-gem 'devise-jwt', '~> 0.7.0'
+gem "devise"
+gem "devise-jwt", "~> 0.7.0"
 
-gem 'rack-cors'
+gem "rack-cors"
 
-gem 'jsonapi-rails'
+gem "jsonapi-rails"
+
+gem "prettier"
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
-  gem "debug", platforms: %i[ mri mingw x64_mingw ]
+  gem "debug", platforms: %i[mri mingw x64_mingw]
 end
 
 group :development do
@@ -55,9 +57,10 @@ group :development do
 end
 
 group :test do
-  gem 'jsonapi-rspec'
-  gem 'faker'
-  gem 'factory_bot_rails'
-  gem 'rspec-rails'
+  gem "jsonapi-rspec"
+  gem "faker"
+  gem "factory_bot_rails"
+  gem "rspec-rails"
 end
 
+gem "lefthook", "~> 1.1"
