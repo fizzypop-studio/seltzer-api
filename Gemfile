@@ -34,15 +34,10 @@ gem "bootsnap", require: false
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
 
-# Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
-# gem "rack-cors"
-
 gem "devise"
 gem "devise-jwt", "~> 0.7.0"
 
 gem "rack-cors"
-
-gem "jsonapi-rails"
 
 gem "prettier"
 
@@ -64,3 +59,5 @@ group :test do
 end
 
 gem "lefthook", "~> 1.1"
+
+gem "jsonapi-serializer", "~> 2.2"
