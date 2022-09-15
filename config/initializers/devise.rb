@@ -14,14 +14,8 @@ Devise.setup do |config|
   # confirmation, reset password and unlock tokens in the database.
   # Devise will use the `secret_key_base` as its `secret_key`
   # by default. You can change it below and use your own secret key.
-  # config.secret_key = 'a5c4ce2d05d8ac821237c8481df90741e544e5874dd74e6792bafd499379c1ee8764914253522133aad2c41493144a958b68b1b372b07f37db1e22a648ba42ba'
-  # JWT Configuration
-  config.jwt do |jwt|
-    jwt.secret = Rails.application.credentials.devise[:jwt_secret_key]
-    jwt.dispatch_requests = [["POST", %r{^/api/v1/login$}]]
-    jwt.revocation_requests = [["DELETE", %r{^/api/v1/logout$}]]
-    jwt.expiration_time = 15.day.to_i
-  end
+  # config.secret_key = '2b26684f18d3072a47805cfda19f0fa767bad2aa8b0ee3fc6820e6c93efbc667b32596628f544401479eb318fd788a4d20c9526d828771fb6fcd945df15f7e1c'
+
   # ==> Controller configuration
   # Configure the parent class to the devise controllers.
   # config.parent_controller = 'DeviseController'
@@ -30,8 +24,7 @@ Devise.setup do |config|
   # Configure the e-mail address which will be shown in Devise::Mailer,
   # note that it will be overwritten if you use your own mailer class
   # with default "from" parameter.
-  config.mailer_sender =
-    "please-change-me-at-config-initializers-devise@example.com"
+  config.mailer_sender = 'please-change-me-at-config-initializers-devise@example.com'
 
   # Configure the class responsible to send e-mails.
   # config.mailer = 'Devise::Mailer'
@@ -43,7 +36,7 @@ Devise.setup do |config|
   # Load and configure the ORM. Supports :active_record (default) and
   # :mongoid (bson_ext recommended) by default. Other ORMs may be
   # available as additional gems.
-  require "devise/orm/active_record"
+  require 'devise/orm/active_record'
 
   # ==> Configuration for any authentication mechanism
   # Configure which keys are used when authenticating a user. The default is
@@ -133,7 +126,7 @@ Devise.setup do |config|
   config.stretches = Rails.env.test? ? 1 : 12
 
   # Set up a pepper to generate the hashed password.
-  # config.pepper = 'a891f6c813fdb672457fa4af6ae43f983d771a23414e73712797c8a9b6ded0fcd5ebafb2dc6938069ee13322f74ab080f837d709732da2cde86f184fd0be1048'
+  # config.pepper = 'd029ee113e0c3abb7b90909ab75b59055cd3229c96b53c4506f4e07723175f9769998d00b6f92c02ca31ef2afb95a67a4858d771d36a32d16c24c5b7657cc8c4'
 
   # Send a notification to the original email when the user's email is changed.
   # config.send_email_changed_notification = false
@@ -270,7 +263,7 @@ Devise.setup do |config|
   # should add them to the navigational formats lists.
   #
   # The "*/*" below is required to match Internet Explorer requests.
-  # config.navigational_formats = ['*/*', :html]
+  config.navigational_formats = ['*/*', :html, :turbo_stream]
 
   # The default HTTP method used to sign out a resource. Default is :delete.
   config.sign_out_via = :delete

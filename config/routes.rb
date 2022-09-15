@@ -1,27 +1,16 @@
+# frozen_string_literal: true
+
 Rails.application.routes.draw do
-  mount Rswag::Ui::Engine => "/api-docs"
-  mount Rswag::Api::Engine => "/api-docs"
+  mount Rswag::Ui::Engine => '/api-docs'
+  mount Rswag::Api::Engine => '/api-docs'
+  root 'pages#home'
 
-  namespace :api, defaults: { format: :json } do
-    namespace :v1 do
-      resources :users do
-        resources :contacts
-      end
-    end
-  end
+  use_doorkeeper
+  devise_for :users
 
-  devise_for :users,
-             defaults: {
-               format: :json
-             },
-             path: "",
-             path_names: {
-               sign_in: "api/v1/login",
-               sign_out: "api/v1/logout",
-               registration: "api/v1/signup"
-             },
-             controllers: {
-               sessions: "users/sessions",
-               registrations: "users/registrations"
-             }
+  draw :api
+  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+
+  # Defines the root path route ("/")
+  # root "articles#index"
 end
