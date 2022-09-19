@@ -12,7 +12,7 @@ module Swagger
 
             property :grant_type do
               key :type, :string
-              key :example, 'password'
+              key :example, "password"
             end
 
             property :email do
@@ -37,7 +37,7 @@ module Swagger
 
             property :token do
               key :type, :string
-              key :example, 'access token or refresh token'
+              key :example, "access token or refresh token"
             end
 
             property :client_id do

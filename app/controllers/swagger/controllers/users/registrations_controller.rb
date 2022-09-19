@@ -6,48 +6,38 @@ module Swagger
       class RegistrationsController
         include Swagger::Blocks
 
-        swagger_path '/users' do
+        swagger_path "/users" do
           operation :post do
-            key :summary, 'Register'
-            key :description, 'Register and generate access & refresh tokens'
-            key :operationId, 'userRegister'
-            key :tags, [
-              'user'
-            ]
+            key :summary, "Register"
+            key :description, "Register and generate access & refresh tokens"
+            key :operationId, "userRegister"
+            key :tags, ["user"]
 
             request_body do
               key :required, true
-              content :'application/json' do
-                schema do
-                  key :'$ref', :UserRegistrationInput
-                end
+              content :"application/json" do
+                schema { key :"$ref", :UserRegistrationInput }
               end
             end
 
             response 200 do
-              key :description, 'Successfull response'
-              content :'application/json' do
-                schema do
-                  key :'$ref', :UserRegistrationSuccessResponse
-                end
+              key :description, "Successfull response"
+              content :"application/json" do
+                schema { key :"$ref", :UserRegistrationSuccessResponse }
               end
             end
 
             response 422 do
-              key :description, 'Error response'
-              content :'application/json' do
-                schema do
-                  key :'$ref', :ErrorResponse
-                end
+              key :description, "Error response"
+              content :"application/json" do
+                schema { key :"$ref", :ErrorResponse }
               end
             end
 
             response 401 do
-              key :description, 'Invalid client response'
-              content :'application/json' do
-                schema do
-                  key :'$ref', :UserRegistrationInvalidClientResponse
-                end
+              key :description, "Invalid client response"
+              content :"application/json" do
+                schema { key :"$ref", :UserRegistrationInvalidClientResponse }
               end
             end
           end

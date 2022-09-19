@@ -13,7 +13,7 @@ module Swagger
               key :type, :array
               items do
                 key :type, :string
-                key :example, 'can not be blank'
+                key :example, "can not be blank"
               end
             end
           end

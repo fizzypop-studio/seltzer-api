@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-ENV['RAILS_ENV'] ||= 'test'
-require_relative '../config/environment'
-require 'rails/test_help'
-require 'helpers/doorkeeper_params'
+ENV["RAILS_ENV"] ||= "test"
+require_relative "../config/environment"
+require "rails/test_help"
+require "helpers/doorkeeper_params"
 
 module ActiveSupport
   class TestCase

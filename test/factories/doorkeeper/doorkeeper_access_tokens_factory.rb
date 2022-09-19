@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 FactoryBot.define do
-  factory :doorkeeper_access_token, class: 'Doorkeeper::AccessToken' do
+  factory :doorkeeper_access_token, class: "Doorkeeper::AccessToken" do
     association :application, factory: :doorkeeper_application
     expires_in { 1.hour }
     resource_owner_id { create(:user).id }

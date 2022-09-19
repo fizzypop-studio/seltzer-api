@@ -9,7 +9,15 @@ module Swagger
         swagger_component do
           schema :UserRegistrationSuccessResponse do
             key :type, :object
-            key :required, %i[id access_token token_type expires_in refresh_token created_at]
+            key :required,
+                %i[
+                  id
+                  access_token
+                  token_type
+                  expires_in
+                  refresh_token
+                  created_at
+                ]
 
             property :id do
               key :type, :string

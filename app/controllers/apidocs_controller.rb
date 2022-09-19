@@ -4,23 +4,22 @@ class ApidocsController < ApplicationController
   include Swagger::Blocks
 
   swagger_root do
-    key :openapi, '3.0.0'
+    key :openapi, "3.0.0"
 
     info do
-      key :version, '1.0.0'
-      key :title, 'Devise + Doorkeeper Starter'
-      key :description, 'Devise + Doorkeeper Starter API documentation'
+      key :version, "1.0.0"
+      key :title, "Seltzer API"
+      key :description, "Seltzer API Documentation"
 
       contact do
-        key :name, 'Devise + Doorkeeper Starter'
-        key :url, 'https://devise-doorkeeper-starter.herokuapp.com'
-        key :email, 'nejdetkadir.550@gmail.com'
+        key :name, "Seltzer API Starter"
+        key :email, "sethcarrino@gmail.com"
       end
     end
 
     server do
-      key :url, "#{Rails.env.development? ? 'localhost:3000' : 'https://devise-doorkeeper-starter.herokuapp.com'}/api/v1/"
-      key :description, 'Branchsight API'
+      key :url, "#{Rails.env.development? ? "localhost:3000" : ""}/api/v1/"
+      key :description, "Seltzer API"
     end
   end
 
@@ -37,7 +36,7 @@ class ApidocsController < ApplicationController
   ].freeze
 
   def index
-    render html: nil, layout: 'swagger'
+    render html: nil, layout: "swagger"
   end
 
   def data

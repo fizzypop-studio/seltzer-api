@@ -7,8 +7,7 @@ module Doorkeeper
     def create
       headers.merge!(authorize_response.headers)
 
-      render json: authorize_response.body,
-             status: authorize_response.status
+      render json: authorize_response.body, status: authorize_response.status
     rescue Errors::DoorkeeperError => e
       handle_token_exception(e)
     end
@@ -19,10 +18,10 @@ module Doorkeeper
       # submitted an invalid token or the token has been revoked successfully.
       if token.blank?
         render json: {}, status: 200
-      # The authorization server validates [...] and whether the token
-      # was issued to the client making the revocation request. If this
-      # validation fails, the request is refused and the client is informed
-      # of the error by the authorization server as described below.
+        # The authorization server validates [...] and whether the token
+        # was issued to the client making the revocation request. If this
+        # validation fails, the request is refused and the client is informed
+        # of the error by the authorization server as described below.
       elsif authorized?
         revoke_token
         render json: {}, status: 200
@@ -120,8 +119,9 @@ module Doorkeeper
     # RFC 7009 due to the refresh token implementation that is a field in
     # the access token model.
     def token
-      @token ||= Doorkeeper.config.access_token_model.by_token(params['token']) ||
-                 Doorkeeper.config.access_token_model.by_refresh_token(params['token'])
+      @token ||=
+        Doorkeeper.config.access_token_model.by_token(params["token"]) ||
+          Doorkeeper.config.access_token_model.by_refresh_token(params["token"])
     end
 
     def strategy
@@ -129,13 +129,16 @@ module Doorkeeper
     end
 
     def authorize_response
-      @authorize_response ||= begin
-        before_successful_authorization
-        auth = strategy.authorize
-        context = build_context(auth: auth)
-        after_successful_authorization(context) unless auth.is_a?(Doorkeeper::OAuth::ErrorResponse)
-        auth
-      end
+      @authorize_response ||=
+        begin
+          before_successful_authorization
+          auth = strategy.authorize
+          context = build_context(auth: auth)
+          unless auth.is_a?(Doorkeeper::OAuth::ErrorResponse)
+            after_successful_authorization(context)
+          end
+          auth
+        end
     end
 
     def build_context(**attributes)
@@ -151,7 +154,8 @@ module Doorkeeper
     end
 
     def revocation_error_response
-      error_description = I18n.t(:unauthorized, scope: %i[doorkeeper errors messages revoke])
+      error_description =
+        I18n.t(:unauthorized, scope: %i[doorkeeper errors messages revoke])
 
       { error: :unauthorized_client, error_description: error_description }
     end

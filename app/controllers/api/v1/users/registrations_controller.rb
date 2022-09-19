@@ -11,8 +11,12 @@ module Api
         def create
           client_app = Doorkeeper::Application.find_by(uid: params[:client_id])
           unless client_app
-            return render json: { error: 'Client Not Found. Check Provided Client Id.' },
-                          status: :unauthorized
+            return(
+              render json: {
+                       error: "Client Not Found. Check Provided Client Id."
+                     },
+                     status: :unauthorized
+            )
           end
 
           allowed_params = user_params.except(:client_id)
@@ -21,8 +25,10 @@ module Api
           if user.save
             render json: render_user(user, client_app), status: :ok
           else
-
-            render json: { errors: user.errors.full_messages }, status: :unprocessable_entity
+            render json: {
+                     errors: user.errors.full_messages
+                   },
+                   status: :unprocessable_entity
           end
         end
 
@@ -31,19 +37,28 @@ module Api
 
           client_app = Doorkeeper::Application.find_by(uid: params[:client_id])
           unless client_app
-            return render json: { error: 'Client Not Found. Check Provided Client Id.' },
-                          status: :unauthorized
+            return(
+              render json: {
+                       error: "Client Not Found. Check Provided Client Id."
+                     },
+                     status: :unauthorized
+            )
           end
           allowed_params = user_params.except(:client_id, :client_secret)
 
           # If email or password are not provided, use existing email and password
           allowed_params[:email] = user.email if allowed_params[:email].blank?
-          allowed_params[:password] = user.password if allowed_params[:password].blank?
+          allowed_params[:password] = user.password if allowed_params[
+            :password
+          ].blank?
 
           if user.update_with_password(allowed_params)
             render json: render_user(user, client_app), status: :ok
           else
-            render json: { errors: user.errors.full_messages }, status: :unprocessable_entity
+            render json: {
+                     errors: user.errors.full_messages
+                   },
+                   status: :unprocessable_entity
           end
         end
 

@@ -9,7 +9,8 @@ module Swagger
         swagger_component do
           schema :UserTokenSuccessResponse do
             key :type, :object
-            key :required, %i[access_token token_type expires_in refresh_token created_at]
+            key :required,
+                %i[access_token token_type expires_in refresh_token created_at]
 
             property :access_token do
               key :type, :string
