@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_04_04_030809) do
+ActiveRecord::Schema[7.0].define(version: 2022_09_19_144026) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -24,13 +24,9 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_04_030809) do
     t.datetime "created_at", null: false
     t.string "scopes"
     t.string "previous_refresh_token", default: "", null: false
-    t.index ["application_id"],
-            name: "index_oauth_access_tokens_on_application_id"
-    t.index ["refresh_token"],
-            name: "index_oauth_access_tokens_on_refresh_token",
-            unique: true
-    t.index ["resource_owner_id"],
-            name: "index_oauth_access_tokens_on_resource_owner_id"
+    t.index ["application_id"], name: "index_oauth_access_tokens_on_application_id"
+    t.index ["refresh_token"], name: "index_oauth_access_tokens_on_refresh_token", unique: true
+    t.index ["resource_owner_id"], name: "index_oauth_access_tokens_on_resource_owner_id"
     t.index ["token"], name: "index_oauth_access_tokens_on_token", unique: true
   end
 
@@ -55,13 +51,11 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_04_030809) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "role", default: 0
+    t.string "first_name"
+    t.string "last_name"
     t.index ["email"], name: "index_users_on_email", unique: true
-    t.index ["reset_password_token"],
-            name: "index_users_on_reset_password_token",
-            unique: true
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
-  add_foreign_key "oauth_access_tokens",
-                  "oauth_applications",
-                  column: "application_id"
+  add_foreign_key "oauth_access_tokens", "oauth_applications", column: "application_id"
 end

@@ -6,9 +6,13 @@
 #
 user:
   id: 1
+  first_name: "John"
+  last_name: "Smith"
   email: "user@test.com"
   role: "user"
 admin:
   id: 2
+  first_name: "Jane"
+  last_name: "Doe"
   email: "admin@test.com"
   role: "admin"

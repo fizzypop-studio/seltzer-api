@@ -10,6 +10,7 @@ class User < ApplicationRecord
          :validatable
 
   validates :email, format: URI::MailTo::EMAIL_REGEXP
+  validates :first_name, :last_name, presence: true
   enum role: %i[user admin]
 
   # the authenticate method from devise documentation

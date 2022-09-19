@@ -35,7 +35,13 @@ module Helpers
     end
 
     def oauth_register_params(user, application)
-      { email: user.email, password: user.password, client_id: application.uid }
+      {
+        email: user.email,
+        first_name: user.first_name,
+        last_name: user.last_name,
+        password: user.password,
+        client_id: application.uid
+      }
     end
   end
 end

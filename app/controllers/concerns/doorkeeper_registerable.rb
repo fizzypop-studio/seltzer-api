@@ -25,6 +25,8 @@ module DoorkeeperRegisterable
     {
       id: user.id,
       email: user.email,
+      first_name: user.first_name,
+      last_name: user.last_name,
       role: user.role,
       access_token: access_token.token,
       token_type: token_type,

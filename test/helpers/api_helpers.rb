@@ -7,7 +7,7 @@ require "rails/test_help"
 class ApiTestHelper
   # Post sign up request to api
   def api_sign_up(email, password, _client_id)
-    uri = URI("http://localhost:3000/api/v1/users")
+    uri = URI("http://localhost:3001/api/v1/users")
     http = Net::HTTP.new(uri.host, uri.port)
     request = Net::HTTP::Post.new(uri.path)
     request.set_form_data(
@@ -22,7 +22,7 @@ class ApiTestHelper
 
   # Post sign in request to api
   def api_sign_in(grant_type, email, password, client_id, client_secret)
-    uri = URI("http://localhost:3000/api/v1/oauth/token")
+    uri = URI("http://localhost:3001/api/v1/oauth/token")
     http = Net::HTTP.new(uri.host, uri.port)
     request = Net::HTTP::Post.new(uri.path)
     request.set_form_data(
@@ -39,7 +39,7 @@ class ApiTestHelper
 
   # Post sign out request to api
   def post_sign_out(token, client_id, client_secret)
-    uri = URI("http://localhost:3000/api/v1/oauth/revoke")
+    uri = URI("http://localhost:3001/api/v1/oauth/revoke")
     http = Net::HTTP.new(uri.host, uri.port)
     request = Net::HTTP::Post.new(uri.path)
     request.set_form_data(

@@ -21,7 +21,7 @@ module Api
 
           allowed_params = user_params.except(:client_id)
           user = User.new(allowed_params)
-
+          debugger
           if user.save
             render json: render_user(user, client_app), status: :ok
           else
@@ -46,7 +46,13 @@ module Api
           end
           allowed_params = user_params.except(:client_id, :client_secret)
 
-          # If email or password are not provided, use existing email and password
+          # If first_name, last_name, email or password are not provided, use existing email and password
+          allowed_params[:first_name] = user.first_name if allowed_params[
+            :first_name
+          ].blank?
+          allowed_params[:last_name] = user.last_name if allowed_params[
+            :last_name
+          ].blank?
           allowed_params[:email] = user.email if allowed_params[:email].blank?
           allowed_params[:password] = user.password if allowed_params[
             :password
@@ -65,7 +71,14 @@ module Api
         private
 
         def user_params
-          params.permit(:email, :password, :current_password, :client_id)
+          params.permit(
+            :email,
+            :first_name,
+            :last_name,
+            :password,
+            :current_password,
+            :client_id
+          )
         end
       end
     end
