@@ -21,7 +21,7 @@ module Api
 
           allowed_params = user_params.except(:client_id)
           user = User.new(allowed_params)
-          debugger
+
           if user.save
             render json: render_user(user, client_app), status: :ok
           else
