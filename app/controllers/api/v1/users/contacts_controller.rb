@@ -4,26 +4,35 @@ module Api
   module V1
     module Users
       class ContactsController < ApiController
-        before_action :set_contact, only: %i[show edit update destroy]
+        before_action :doorkeeper_authorize!
+        before_action :current_user
+        respond_to :json
 
         # GET /contacts or /contacts.json
         def index
-          @contacts = Contact.all
-          render json: @contacts
+          if @current_user.nil?
+            render json: { error: "Not Authorized" }, status: :unauthorized
+          else
+            @contacts = Contact.where({ user_id: @current_user.id })
+
+            contact_map =
+              @contacts.map do |contact|
+                {
+                  id: contact.id,
+                  first_name: contact.first_name,
+                  last_name: contact.last_name,
+                  email: contact.email,
+                  role: contact.role,
+                  created_at: contact.created_at.iso8601
+                }
+              end
+
+            render json: contact_map, status: :ok
+          end
         end
 
         # GET /contacts/1 or /contacts/1.json
         def show
-          render json: @contact
-        end
-
-        # GET /contacts/new
-        def new
-          render json: @contact = Contact.new
-        end
-
-        # GET /contacts/1/edit
-        def edit
           render json: @contact
         end
 
@@ -80,17 +89,16 @@ module Api
 
         private
 
-        # Use callbacks to share common setup or constraints between actions.
-        def set_contact
-          @contact = Contact.find_by_id(params[:id])
-          if @contact.nil?
-            render json: { error: "Contact not found" }, status: :not_found
-          end
-        end
-
         # Only allow a list of trusted parameters through.
         def contact_params
-          params.require(:contact).permit(:title, :body)
+          params.require(:contact).permit(
+            :id,
+            :email,
+            :first_name,
+            :last_name,
+            :role,
+            :user_id
+          )
         end
       end
     end

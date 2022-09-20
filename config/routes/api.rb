@@ -11,6 +11,7 @@ namespace :api do
       put "/reset-password",
           to: "registrations#reset_password",
           as: :user_reset_password
+      get "/contacts", to: "contacts#index", as: :user_contacts
     end
 
     get "/users/me", to: "users#me"
