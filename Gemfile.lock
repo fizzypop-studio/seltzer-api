@@ -135,7 +135,11 @@ GEM
       activesupport (>= 5.0.0)
     json-schema (2.8.1)
       addressable (>= 2.4)
+    launchy (2.5.0)
+      addressable (~> 2.7)
     lefthook (1.1.1)
+    letter_opener (1.8.1)
+      launchy (>= 2.2, < 3)
     loofah (2.18.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
@@ -343,6 +347,7 @@ DEPENDENCIES
   importmap-rails
   jbuilder
   lefthook (~> 1.1)
+  letter_opener
   pg (~> 1.1)
   prettier (~> 3.2)
   puma (~> 5.0)

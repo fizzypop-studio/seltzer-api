@@ -5,6 +5,12 @@ namespace :api do
     scope :users, module: :users do
       post "/", to: "registrations#create", as: :user_registration
       patch "/", to: "registrations#update_profile", as: :user_update_profile
+      post "/send-reset-password",
+           to: "registrations#send_reset_password",
+           as: :user_send_reset_password
+      put "/reset-password",
+          to: "registrations#reset_password",
+          as: :user_reset_password
     end
 
     get "/users/me", to: "users#me"

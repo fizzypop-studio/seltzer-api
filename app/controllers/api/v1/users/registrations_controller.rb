@@ -4,7 +4,8 @@ module Api
   module V1
     module Users
       class RegistrationsController < ApiController
-        skip_before_action :doorkeeper_authorize!, only: %i[create]
+        skip_before_action :doorkeeper_authorize!,
+                           only: %i[create send_reset_password reset_password]
 
         include DoorkeeperRegisterable
 
@@ -68,7 +69,108 @@ module Api
           end
         end
 
+        def send_reset_password
+          client_app = Doorkeeper::Application.find_by(uid: params[:client_id])
+          unless client_app
+            return(
+              render json: {
+                       error: "Client Not Found. Check Provided Client Id."
+                     },
+                     status: :unauthorized
+            )
+          end
+
+          allowed_params =
+            user_params.except(
+              :first_name,
+              :last_name,
+              :password,
+              :current_password,
+              :client_id
+            )
+          user = User.find_by_email(allowed_params[:email])
+
+          if user.present?
+            user.send_reset_password_instructions
+          elsif user.nil?
+            render json: {
+                     error: "Email not found. Please sign up or try again."
+                   },
+                   status: :bad_request
+          else
+            render json: {
+                     error: "Something went wrong. Please try again"
+                   },
+                   status: :bad_request
+          end
+        end
+
+        def reset_password
+          client_app = Doorkeeper::Application.find_by(uid: params[:client_id])
+          unless client_app
+            return(
+              render json: {
+                       error: "Client Not Found. Check Provided Client Id."
+                     },
+                     status: :unauthorized
+            )
+          end
+
+          allowed_params =
+            user_params.except(
+              :email,
+              :first_name,
+              :last_name,
+              :current_password,
+              :client_id,
+              :client_secret
+            )
+
+          token =
+            Devise.token_generator.digest(
+              User,
+              :reset_password_token,
+              allowed_params["reset_password_token"]
+            )
+
+          user = User.find_by(reset_password_token: token)
+
+          if user.present? && token.present?
+            user.reset_password(
+              allowed_params[:password],
+              allowed_params[:password_confirmation]
+            )
+          elsif user.nil?
+            render json: {
+                     error:
+                       "User not found for reset token. Please try to reset again."
+                   },
+                   status: :bad_request
+          elsif token.nil?
+            render json: {
+                     error: "Invalid token. Please reset your password again."
+                   },
+                   status: :bad_request
+          else
+            render json: {
+                     error: "Something went wrong. Please try again"
+                   },
+                   status: :bad_request
+          end
+        end
+
         private
+
+        def check_valid_token?
+          token =
+            Devise.token_generator.digest(
+              User,
+              :reset_password_token,
+              params["reset_password_token"]
+            )
+          user = User.find_by(reset_password_token: token)
+          user.present?
+        end
 
         def user_params
           params.permit(
@@ -76,7 +178,9 @@ module Api
             :first_name,
             :last_name,
             :password,
+            :password_confirmation,
             :current_password,
+            :reset_password_token,
             :client_id
           )
         end
