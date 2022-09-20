@@ -3,6 +3,7 @@
 namespace :api do
   namespace :v1 do
     scope :users, module: :users do
+      # User Registration API Routes
       post "/", to: "registrations#create", as: :user_registration
       patch "/", to: "registrations#update_profile", as: :user_update_profile
       post "/send-reset-password",
@@ -11,7 +12,12 @@ namespace :api do
       put "/reset-password",
           to: "registrations#reset_password",
           as: :user_reset_password
+
+      # Contacts API Routes
       get "/contacts", to: "contacts#index", as: :user_contacts
+      get "/contacts/:id", to: "contacts#show", as: :user_contact
+      post "/contacts", to: "contacts#create", as: :create_user_contact
+      delete "/contacts", to: "contacts#destroy", as: :destroy_user_contact
     end
 
     get "/users/me", to: "users#me"

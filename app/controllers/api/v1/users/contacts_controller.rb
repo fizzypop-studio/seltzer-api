@@ -4,6 +4,7 @@ module Api
   module V1
     module Users
       class ContactsController < ApiController
+        before_action :set_contact, only: %i[show update destroy]
         before_action :doorkeeper_authorize!
         before_action :current_user
         respond_to :json
@@ -14,7 +15,6 @@ module Api
             render json: { error: "Not Authorized" }, status: :unauthorized
           else
             @contacts = Contact.where({ user_id: @current_user.id })
-
             contact_map =
               @contacts.map do |contact|
                 {
@@ -26,7 +26,6 @@ module Api
                   created_at: contact.created_at.iso8601
                 }
               end
-
             render json: contact_map, status: :ok
           end
         end
@@ -38,52 +37,53 @@ module Api
 
         # POST /contacts or /contacts.json
         def create
-          @contact = Contact.new(contact_params)
+          allowed_params = contact_params.except(:token)
+          @contact = Contact.new(allowed_params)
 
-          respond_to do |format|
-            if @contact.save
-              format.html do
-                redirect_to api_v1_user_contact_url(@contact),
-                            notice: "Contact was successfully created."
-              end
-              format.json { render :show, status: :created, location: @contact }
-            else
-              format.html { render :new, status: :unprocessable_entity }
-              format.json do
-                render json: @contact.errors, status: :unprocessable_entity
-              end
-            end
+          if @contact.save
+            render json: {
+                     id: @contact.id,
+                     first_name: @contact.first_name,
+                     last_name: @contact.last_name,
+                     email: @contact.email,
+                     role: @contact.role,
+                     created_at: @contact.created_at.iso8601
+                   },
+                   status: :ok
+          else
+            render json: {
+                     error:
+                       "Something went wrong creating Contact. Please try again."
+                   },
+                   status: :bad_request
           end
         end
 
         # PATCH/PUT /contacts/1 or /contacts/1.json
         def update
-          respond_to do |format|
-            if @contact.update(contact_params)
-              format.html do
-                redirect_to api_v1_contact_url(@contact),
-                            notice: "Contact was successfully updated."
-              end
-              format.json { render :show, status: :ok, location: @contact }
-            else
-              format.html { render :edit, status: :unprocessable_entity }
-              format.json do
-                render json: @contact.errors, status: :unprocessable_entity
-              end
-            end
+          if @contact.update
+            render json: {
+                     id: @contact.id,
+                     first_name: @contact.first_name,
+                     last_name: @contact.last_name,
+                     email: @contact.email,
+                     role: @contact.role,
+                     created_at: @contact.created_at.iso8601
+                   },
+                   status: :ok
+          else
+            render json: {
+                     error:
+                       "Something went wrong updating Contact. Please try again."
+                   },
+                   status: :bad_request
           end
         end
 
         # DELETE /contacts/1 or /contacts/1.json
         def destroy
-          @contact.destroy
-
-          respond_to do |format|
-            format.html do
-              redirect_to api_v1_contacts_url,
-                          notice: "Contact was successfully destroyed."
-            end
-            format.json { head :no_content }
+          if @contact.destroy
+          else
           end
         end
 
@@ -91,14 +91,22 @@ module Api
 
         # Only allow a list of trusted parameters through.
         def contact_params
-          params.require(:contact).permit(
+          params.permit(
             :id,
             :email,
             :first_name,
             :last_name,
             :role,
-            :user_id
+            :user_id,
+            :token
           )
+        end
+
+        def set_contact
+          @contact = Contact.find_by_id(params[:id])
+          if @contact.nil?
+            render json: { error: "Contact not found" }, status: :not_found
+          end
         end
       end
     end
