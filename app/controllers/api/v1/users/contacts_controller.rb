@@ -11,28 +11,36 @@ module Api
 
         # GET /contacts or /contacts.json
         def index
-          if @current_user.nil?
-            render json: { error: "Not Authorized" }, status: :unauthorized
-          else
-            @contacts = Contact.where({ user_id: @current_user.id })
-            contact_map =
-              @contacts.map do |contact|
-                {
-                  id: contact.id,
-                  first_name: contact.first_name,
-                  last_name: contact.last_name,
-                  email: contact.email,
-                  role: contact.role,
-                  created_at: contact.created_at.iso8601
-                }
-              end
-            render json: contact_map, status: :ok
-          end
+          @contacts = Contact.where({ user_id: @current_user.id })
+          contact_map =
+            @contacts.map do |contact|
+              {
+                id: contact.id,
+                first_name: contact.first_name,
+                last_name: contact.last_name,
+                email: contact.email,
+                role: contact.role,
+                created_at: contact.created_at.iso8601
+              }
+            end
+          render json: contact_map, status: :ok
         end
 
         # GET /contacts/1 or /contacts/1.json
         def show
-          render json: @contact
+          if current_user && @contact.user_id == current_user.id
+            render json: {
+                     id: @contact.id,
+                     first_name: @contact.first_name,
+                     last_name: @contact.last_name,
+                     email: @contact.email,
+                     role: @contact.role,
+                     created_at: @contact.created_at.iso8601
+                   },
+                   status: :ok
+          else
+            render json: { error: "Cannot find contact." }, status: :bad_request
+          end
         end
 
         # POST /contacts or /contacts.json
@@ -61,7 +69,9 @@ module Api
 
         # PATCH/PUT /contacts/1 or /contacts/1.json
         def update
-          if @contact.update
+          allowed_params = contact_params.except(:user_id, :token)
+
+          if @contact.update(allowed_params)
             render json: {
                      id: @contact.id,
                      first_name: @contact.first_name,
@@ -83,7 +93,21 @@ module Api
         # DELETE /contacts/1 or /contacts/1.json
         def destroy
           if @contact.destroy
+            render json: {
+                     id: @contact.id,
+                     first_name: @contact.first_name,
+                     last_name: @contact.last_name,
+                     email: @contact.email,
+                     role: @contact.role,
+                     created_at: @contact.created_at.iso8601
+                   },
+                   status: :ok
           else
+            render json: {
+                     error:
+                       "Something went wrong deleting Contact. Please try again."
+                   },
+                   status: :bad_request
           end
         end
 

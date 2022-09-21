@@ -16,8 +16,9 @@ namespace :api do
       # Contacts API Routes
       get "/contacts", to: "contacts#index", as: :user_contacts
       get "/contacts/:id", to: "contacts#show", as: :user_contact
+      put "/contacts/:id", to: "contacts#update", as: :update_user_contact
       post "/contacts", to: "contacts#create", as: :create_user_contact
-      delete "/contacts", to: "contacts#destroy", as: :destroy_user_contact
+      delete "/contacts/:id", to: "contacts#destroy", as: :destroy_user_contact
     end
 
     get "/users/me", to: "users#me"
