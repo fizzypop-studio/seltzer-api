@@ -20,6 +20,14 @@ rbenv install 3.1.2
 
 ### Install dependencies
 
+Using postgresql for the database so you will need that unless you want to configure your own setup. In order to successfully go throught the initial `bundle install` you will need it installed via [Homebrew](https://brew.sh/)
+
+```shell
+brew install postgresql@14
+```
+
+You can also install the [Postgres app](https://postgresapp.com/downloads.html) as well for a nice way to manage your local databases with a GUI.
+
 Using [Bundler](https://github.com/bundler/bundler)
 
 ```shell
