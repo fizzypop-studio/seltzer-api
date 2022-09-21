@@ -1,6 +1,6 @@
 # Seltzer API
 
-[project.com](https://project.com)
+Rails API for [Seltzer CLI](https://github.com/fizzypop-studio/seltzer)
 
 ## Install
 
@@ -40,7 +40,7 @@ rails s
 
 ## Getting Client ID & Client Secret for your clients
 
-You will need to get the `client_id` and `client_secret` for the frontend react client or other clients you decide to create. You
+This applciation utilizes [Doorkeeper](https://github.com/doorkeeper-gem/doorkeeper) to authorize users to your API and makes it easy to introduce OAuth 2 provider functionality to your Ruby on Rails application.. You will need to get the `client_id` and `client_secret` for the frontend react client or other clients you decide to create. 
 
 1. Open rails console
 
