@@ -101,3 +101,7 @@ gem 'swagger-blocks', '~> 3.0'
 gem "prettier", "~> 3.2"
 
 gem "lefthook", "~> 1.1"
+
+gem 'kaminari'
+
+gem 'jsonapi-serializer'
