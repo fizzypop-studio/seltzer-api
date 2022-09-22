@@ -55,11 +55,8 @@ module Api
             :last_name
           ].blank?
           allowed_params[:email] = user.email if allowed_params[:email].blank?
-          allowed_params[:password] = user.password if allowed_params[
-            :password
-          ].blank?
 
-          if user.update_with_password(allowed_params)
+          if user.update_without_password(allowed_params)
             render json: render_user(user, client_app), status: :ok
           else
             render json: {
@@ -99,7 +96,7 @@ module Api
                    status: :bad_request
           else
             render json: {
-                     error: "Something went wrong. Please try again"
+                     error: user.errors.full_messages
                    },
                    status: :bad_request
           end
@@ -153,7 +150,7 @@ module Api
                    status: :bad_request
           else
             render json: {
-                     error: "Something went wrong. Please try again"
+                     error: user.errors.full_messages
                    },
                    status: :bad_request
           end
