@@ -1,6 +1,6 @@
 # Seltzer API
 
-Rails API for [Seltzer CLI](https://github.com/fizzypop-studio/seltzer)
+Rails API and starter project for [Seltzer CLI](https://github.com/fizzypop-studio/seltzer) or yourself.
 
 ## Install
 
@@ -45,6 +45,8 @@ rails db:setup
 ```shell
 rails s
 ```
+
+This project is setup to automatically run on port `3001` since the client runs on `3000`
 
 ## Getting Client ID & Client Secret for your clients
 
